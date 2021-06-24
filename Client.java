@@ -19,24 +19,49 @@ import java.net.*;
 import java.io.*;
 import javax.imageio.ImageIO;
 public class Client {
+static String choice="";
+static ImageIcon image;
+static JFrame jframe;
+static JLabel label;
     public static void main(String [] args) {
         try{
             Socket s = new Socket("localhost",4999);
             System.out.println("You are now chatting with Bob");
             
-        JFrame jframe = new JFrame("Alice");
+        jframe = new JFrame("Alice");
         jframe.setSize(400,400);
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        ImageIcon image = new ImageIcon("C:\\Users\\jjoan\\Documents\\NetBeansProjects\\TestNIS\\Images\\cat.jpg");
+        String [] imageNames = {"cat","fish","painting"};
+        image = new ImageIcon("C:\\Users\\jjoan\\Documents\\NetBeansProjects\\TestNIS\\Images\\"+choice+".jpg");
+        label = new JLabel(image);
+        JComboBox comboBox = new JComboBox(imageNames);
+        jframe.add(comboBox,BorderLayout.NORTH);
+        comboBox.addActionListener(new ActionListener (){
+            String option;
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if(e.getSource()==comboBox){
+                  option=(String)comboBox.getSelectedItem();
+                  choice = option;
+                  image = new ImageIcon("C:\\Users\\jjoan\\Documents\\NetBeansProjects\\TestNIS\\Images\\"+choice+".jpg");
+                  label.setIcon(image);
+                  jframe.add(label,BorderLayout.CENTER);
+                  jframe.setVisible(true);
+                  
+                }
+            }
+        });
         
-        JLabel label = new JLabel(image);
+        
+        label = new JLabel(image);
         
         JButton button = new JButton("Send image to Bob");
         jframe.add(label,BorderLayout.CENTER);
         jframe.add(button,BorderLayout.SOUTH);
         
         jframe.setVisible(true);
+        
         
         button.addActionListener(new ActionListener(){
             @Override
@@ -66,6 +91,16 @@ public class Client {
                 }
             }
         });
+        
+        
+             InputStream input = s.getInputStream();
+             BufferedInputStream buffInput = new BufferedInputStream(input);
+             BufferedImage buffImage = ImageIO.read(buffInput);
+             buffInput.close();
+             s.close();
+             ImageIcon recieved = new ImageIcon(buffImage);
+             
+             label.setIcon(recieved);
 
             
         }
@@ -75,6 +110,6 @@ public class Client {
         
     }
     
-    
-    
+   
+        
 }
