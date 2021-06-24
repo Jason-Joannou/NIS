@@ -66,7 +66,7 @@ public class Server {
                label = new JLabel(image);
                //JLabel label = new JLabel("Waiting for image");
                //jframe.add(label,BorderLayout.SOUTH);
-             JButton button = new JButton("Send image to Bob");
+             JButton button = new JButton("Send image to Alice");
              jframe.add(label,BorderLayout.CENTER);
              jframe.add(button,BorderLayout.SOUTH);
         
